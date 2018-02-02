@@ -70,16 +70,19 @@ int main(int argc, char *argv[])
             return EXIT_SUCCESS;
         }
         else if (strcmp(command, "dir") == 0){
-
+            printf("%s\n",system("dir"));
         }
         else if (strcmp(command, "clr") == 0){
-
+            system("clear");
         }
         else if (strcmp(command, "echo") == 0){
 
         }
         else if (strcmp(command, "pause") == 0){
 
+        }
+        else if(strcmp(command, "environ") == 0){
+            system("printenv");
         }
 
         // Unsupported command

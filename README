@@ -1,3 +1,8 @@
 help    display readme file
 quit    quit program
-cd      does nothing yet(prints out input destination)
+cd      change current directory(todo)
+dir     print current directory contents(todo)
+clr     clear screen
+environ list all enviroment strings
+echo    echo rest of input(todo)
+pause   pause until enter is pressed(todo)
