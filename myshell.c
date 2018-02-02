@@ -55,6 +55,18 @@ int main(int argc, char *argv[])
         {
             return EXIT_SUCCESS;
         }
+        else if (strcmp(command, "dir") == 0){
+
+        }
+        else if (strcmp(command, "clr") == 0){
+
+        }
+        else if (strcmp(command, "echo") == 0){
+
+        }
+        else if (strcmp(command, "pause") == 0){
+
+        }
 
         // Unsupported command
         else
