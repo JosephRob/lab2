@@ -27,14 +27,20 @@ int main(int argc, char *argv[])
     char buffer[BUFFER_LEN] = { 0 };
     char command[BUFFER_LEN] = { 0 };
     char arg[BUFFER_LEN] = { 0 };
+    char wd[256];
 
     // Parse the commands provided using argc and argv
-
+    printf("%s\t",getcwd(wd, 256));
     // Perform an infinite loop getting command input from users
     while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
     {
         // Perform string tokenization to get the command and argument
         char tok[]=" \n";
+        for(int x =0;x <BUFFER_LEN;x ++){
+            if (buffer[x]=='\n'){
+                buffer[x]=' ';
+            }
+        }
 
         strcpy(command,strtok(buffer,tok));
         //printf("%s\n",command);
@@ -73,6 +79,7 @@ int main(int argc, char *argv[])
         {
             fputs("Unsupported command, use help to display the manual\n", stderr);
         }
+        printf("%s\t",getcwd(wd, 256));
     }
     return EXIT_SUCCESS;
 }
