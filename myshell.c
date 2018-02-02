@@ -34,7 +34,9 @@ int main(int argc, char *argv[])
     while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
     {
         // Perform string tokenization to get the command and argument
+        char tok[]=" \n";
 
+        strcpy(command,strtok(buffer,tok));
         // Check the command and execute the operations for each command
         // cd command -- change the current directory
         if (strcmp(command, "cd") == 0)
@@ -43,7 +45,9 @@ int main(int argc, char *argv[])
         }
 
         // other commands here...
-        
+        else if (strcmp(command, "help") == 0){
+
+        }
         // quit command -- exit the shell
         else if (strcmp(command, "quit") == 0)
         {
