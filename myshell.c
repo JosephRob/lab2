@@ -37,16 +37,18 @@ int main(int argc, char *argv[])
         char tok[]=" \n";
 
         strcpy(command,strtok(buffer,tok));
+        //printf("%s\n",command);
         // Check the command and execute the operations for each command
         // cd command -- change the current directory
         if (strcmp(command, "cd") == 0)
-        {
-            // your code here
+        {   
+            strcpy(command,strtok(NULL," "));
+            printf("%s\n",command);
         }
 
         // other commands here...
         else if (strcmp(command, "help") == 0){
-
+            
         }
         // quit command -- exit the shell
         else if (strcmp(command, "quit") == 0)
