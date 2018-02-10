@@ -35,14 +35,29 @@ int main(int argc, char *argv[])
     while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
     {
         // Perform string tokenization to get the command and argument
-        char tok[]=" \n";
+        const char tok[]=" \n";
+        int count=0;
         for(int x =0;x <BUFFER_LEN;x ++){
             if (buffer[x]=='\n'){
                 buffer[x]=' ';
             }
+            else if(buffer[x]==' '){
+                count++;
+            }
         }
-
-        strcpy(command,strtok(buffer,tok));
+        
+        char parts[count][BUFFER_LEN];
+        char *A;
+        A=strtok(buffer,tok);
+        strcpy(parts[0],A);
+        for (int x=0;x<count;x++){
+            printf("%s\n",A);
+            strcpy(parts[x],A);
+            A=strtok(NULL,tok);
+        }
+        strcpy(command,parts[0]);
+        printf("%s\n",command);
+        
         //printf("%s\n",command);
         // Check the command and execute the operations for each command
         // cd command -- change the current directory
@@ -70,13 +85,13 @@ int main(int argc, char *argv[])
             return EXIT_SUCCESS;
         }
         else if (strcmp(command, "dir") == 0){
-            printf("%s\n",system("dir"));
+            system("dir");
         }
         else if (strcmp(command, "clr") == 0){
             system("clear");
         }
         else if (strcmp(command, "echo") == 0){
-
+            
         }
         else if (strcmp(command, "pause") == 0){
 
