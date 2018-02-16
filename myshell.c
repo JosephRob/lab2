@@ -45,18 +45,20 @@ int main(int argc, char *argv[])
                 count++;
             }
         }
+        count++;
         
         char parts[count][BUFFER_LEN];
         char *A;
         A=strtok(buffer,tok);
         strcpy(parts[0],A);
         for (int x=0;x<count;x++){
-            printf("%s\n",A);
+            //printf("%s\n",A);
             strcpy(parts[x],A);
             A=strtok(NULL,tok);
+            //printf("%s ",parts[x]);
         }
         strcpy(command,parts[0]);
-        printf("%s\n",command);
+        //printf("input: \t%s\n",command);
         
         //printf("%s\n",command);
         // Check the command and execute the operations for each command
@@ -88,13 +90,17 @@ int main(int argc, char *argv[])
             system("dir");
         }
         else if (strcmp(command, "clr") == 0){
-            system("clear");
+            //system("clear");
+            printf("\e[1;H\e[2J");
         }
         else if (strcmp(command, "echo") == 0){
-            
+            for(int x=1;x<count;x++){
+                printf("%s ",parts[x]);
+            }
+            printf("\n");
         }
         else if (strcmp(command, "pause") == 0){
-
+            getchar();
         }
         else if(strcmp(command, "environ") == 0){
             system("printenv");
