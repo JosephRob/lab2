@@ -21,16 +21,18 @@
 
 // Define functions declared in myshell.h here
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[], char** envp)
 {
     // Input buffer and and commands
     char buffer[BUFFER_LEN] = { 0 };
     char command[BUFFER_LEN] = { 0 };
     char arg[BUFFER_LEN] = { 0 };
     char wd[256];
-
+    char path[256];
+    strcpy(path,getcwd(wd,256));
     // Parse the commands provided using argc and argv
-    printf("%s\t",getcwd(wd, 256));
+    printf("%s/myshell $\t",path);
+
     // Perform an infinite loop getting command input from users
     while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
     {
@@ -65,8 +67,22 @@ int main(int argc, char *argv[])
         // cd command -- change the current directory
         if (strcmp(command, "cd") == 0)
         {   
-            strcpy(command,strtok(NULL," "));
-            printf("%s\n",command);
+            if(strcmp(parts[1],"..")==0){
+                int place=0;
+                for(int x=0;x<256;x++){
+                    if(path[x]=='\0'){
+                        break;
+                    }
+                    if(path[x]=='/')
+                        place=x;
+                }
+                path[place]='\0';
+            }
+            else{
+                strcat(path,"/");
+                strcat(path,parts[1]);
+                printf("%s\n",path);
+            }
         }
 
         // other commands here...
@@ -87,7 +103,14 @@ int main(int argc, char *argv[])
             return EXIT_SUCCESS;
         }
         else if (strcmp(command, "dir") == 0){
-            system("dir");
+            DIR * d=opendir(path);
+            struct dirent *dir;
+            if(d){
+                while((dir=readdir(d))!=NULL){
+                    printf("%s\n",dir->d_name);
+                }
+                closedir(d);
+            }
         }
         else if (strcmp(command, "clr") == 0){
             //system("clear");
@@ -104,6 +127,10 @@ int main(int argc, char *argv[])
         }
         else if(strcmp(command, "environ") == 0){
             system("printenv");
+            /*for(char** env=envp;env!=0;env++){
+                char * thisEnv=*env;
+                printf("%s\n",thisEnv);
+            }*/
         }
 
         // Unsupported command
@@ -111,7 +138,7 @@ int main(int argc, char *argv[])
         {
             fputs("Unsupported command, use help to display the manual\n", stderr);
         }
-        printf("%s\t",getcwd(wd, 256));
+        printf("%s/myshell $\t",path);
     }
     return EXIT_SUCCESS;
 }
