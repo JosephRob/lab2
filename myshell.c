@@ -23,6 +23,13 @@
 
 int main(int argc, char *argv[], char** envp)
 {
+    char * A=argv[1];
+    //printf("%s\t%d\n",A,A!=0);
+    if(A!=0){
+        freopen(A,"r",stdin);
+    }
+
+    //printf("%d\n",strcmp(argv[1],"(null)"));
     // Input buffer and and commands
     char buffer[BUFFER_LEN] = { 0 };
     char command[BUFFER_LEN] = { 0 };
@@ -36,6 +43,7 @@ int main(int argc, char *argv[], char** envp)
     // Perform an infinite loop getting command input from users
     while (fgets(buffer, BUFFER_LEN, stdin) != NULL)
     {
+        if(argv[1]!=0)printf("%s\n",buffer);
         // Perform string tokenization to get the command and argument
         const char tok[]=" \n";
         int count=0;
@@ -43,16 +51,17 @@ int main(int argc, char *argv[], char** envp)
             if (buffer[x]=='\n'){
                 buffer[x]=' ';
             }
-            else if(buffer[x]==' '){
+            else if(buffer[x]==' ' && buffer[x+1]!=' '){
                 count++;
             }
         }
         count++;
+
         
         char parts[count][BUFFER_LEN];
         char *A;
         A=strtok(buffer,tok);
-        strcpy(parts[0],A);
+        //strcpy(parts[0],A);
         for (int x=0;x<count;x++){
             //printf("%s\n",A);
             strcpy(parts[x],A);
@@ -65,6 +74,18 @@ int main(int argc, char *argv[], char** envp)
         //printf("%s\n",command);
         // Check the command and execute the operations for each command
         // cd command -- change the current directory
+
+        for(int x=0;x<count;x++){
+            if (strcmp(parts[x],"<")==0){
+                printf("%d\n",x);
+                freopen(parts[x+1],"r",stdin);
+            }
+            if (strcmp(parts[x],">")==0){
+                printf("%d\t%s\n",x,parts[x+1]);
+                freopen(parts[x+1],"w",stdout);
+            }
+        }
+
         if (strcmp(command, "cd") == 0)
         {   
             if(strcmp(parts[1],"..")==0){
@@ -81,7 +102,6 @@ int main(int argc, char *argv[], char** envp)
             else{
                 strcat(path,"/");
                 strcat(path,parts[1]);
-                printf("%s\n",path);
             }
         }
 
@@ -138,7 +158,12 @@ int main(int argc, char *argv[], char** envp)
         {
             fputs("Unsupported command, use help to display the manual\n", stderr);
         }
+        fflush(stdout);
+        freopen("/dev/tty","a",stdout);
+        freopen("/dev/tty","r",stdin);
+        
         printf("%s/myshell $\t",path);
     }
+    printf("\n");
     return EXIT_SUCCESS;
 }
