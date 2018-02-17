@@ -36,6 +36,7 @@ int main(int argc, char *argv[], char** envp)
     char arg[BUFFER_LEN] = { 0 };
     char wd[256];
     char path[256];
+    FILE * storein;
     strcpy(path,getcwd(wd,256));
     // Parse the commands provided using argc and argv
     printf("%s/myshell $\t",path);
@@ -77,12 +78,13 @@ int main(int argc, char *argv[], char** envp)
 
         for(int x=0;x<count;x++){
             if (strcmp(parts[x],"<")==0){
-                printf("%d\n",x);
+                //printf("%d\n",x);
+                
                 freopen(parts[x+1],"r",stdin);
             }
             if (strcmp(parts[x],">")==0){
                 printf("%d\t%s\n",x,parts[x+1]);
-                freopen(parts[x+1],"w",stdout);
+                storein=fopen(parts[x+1],"w");//there is no input for each of the calls but if there were then they would be done with this stream
             }
         }
 
@@ -123,7 +125,11 @@ int main(int argc, char *argv[], char** envp)
             return EXIT_SUCCESS;
         }
         else if (strcmp(command, "dir") == 0){
+            //printf("%s\t%d\n",parts[1],count);
             DIR * d=opendir(path);
+            if(count>1){
+                d=opendir(parts[1]);
+            }
             struct dirent *dir;
             if(d){
                 while((dir=readdir(d))!=NULL){
@@ -160,7 +166,6 @@ int main(int argc, char *argv[], char** envp)
         }
         fflush(stdout);
         freopen("/dev/tty","a",stdout);
-        freopen("/dev/tty","r",stdin);
         
         printf("%s/myshell $\t",path);
     }
