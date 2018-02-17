@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
                 storein=fopen(parts[x+1],"r");//there is no input for each of the calls but if there were then they would be done with this stream
             }
             if (strcmp(parts[x],">")==0){
-                printf("%d\t%s\n",x,parts[x+1]);
+                //printf("%d\t%s\n",x,parts[x+1]);
                 freopen(parts[x+1],"w",stdout);
             }
         }
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
                     putchar(c);
                 fclose(file);
             }
-            printf("\n");
+           printf("\n");
         }
         // quit command -- exit the shell
         else if (strcmp(command, "quit") == 0)
