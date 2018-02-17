@@ -21,7 +21,7 @@
 
 // Define functions declared in myshell.h here
 
-int main(int argc, char *argv[], char** envp)
+int main(int argc, char *argv[])
 {
     char * A=argv[1];
     //printf("%s\t%d\n",A,A!=0);
@@ -33,7 +33,6 @@ int main(int argc, char *argv[], char** envp)
     // Input buffer and and commands
     char buffer[BUFFER_LEN] = { 0 };
     char command[BUFFER_LEN] = { 0 };
-    char arg[BUFFER_LEN] = { 0 };
     char wd[256];
     char path[256];
     FILE * storein;
@@ -80,11 +79,11 @@ int main(int argc, char *argv[], char** envp)
             if (strcmp(parts[x],"<")==0){
                 //printf("%d\n",x);
                 
-                freopen(parts[x+1],"r",stdin);
+                storein=fopen(parts[x+1],"r");//there is no input for each of the calls but if there were then they would be done with this stream
             }
             if (strcmp(parts[x],">")==0){
                 printf("%d\t%s\n",x,parts[x+1]);
-                storein=fopen(parts[x+1],"w");//there is no input for each of the calls but if there were then they would be done with this stream
+                freopen(parts[x+1],"w",stdout);
             }
         }
 
@@ -127,7 +126,7 @@ int main(int argc, char *argv[], char** envp)
         else if (strcmp(command, "dir") == 0){
             //printf("%s\t%d\n",parts[1],count);
             DIR * d=opendir(path);
-            if(count>1){
+            if(count>1 && (strcmp(parts[1],"<")!=0) && (strcmp(parts[1],">")!=0)){
                 d=opendir(parts[1]);
             }
             struct dirent *dir;
@@ -165,6 +164,7 @@ int main(int argc, char *argv[], char** envp)
             fputs("Unsupported command, use help to display the manual\n", stderr);
         }
         fflush(stdout);
+        fclose(stdout);
         freopen("/dev/tty","a",stdout);
         
         printf("%s/myshell $\t",path);
